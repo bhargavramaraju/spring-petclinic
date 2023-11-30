@@ -435,13 +435,13 @@
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
-                </lifecycleMappingMetadata>
+                </lifecycleMappingMetadata>................
               </configuration>
             </plugin>
           </plugins>
         </pluginManagement>
       </build>
-    </profile>
+    </profile>,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   </profiles>
-
+hello world ,,,,,,,,,,,
 </project> 
