@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-deplyement
+  annotations:
+    kubernetes.io/change-cause: "image updated to 1.2"
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 30%
+  template:
+    metadata: 
+      name: test-pod
+      labels:
+        app: nginx
+    spec: 
+      containers:
+        - name: nop-container
+          image: bhargavramaraju123/practice:v1.0
+          ports:
+            - containerPort: 80
+              protocol: TCP
+
