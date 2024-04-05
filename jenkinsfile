@@ -1,43 +1,11 @@
 pipeline {
-    agent { label 'MAVEN' }
-        options {
-        timeout(time: 30, unit: 'MINUTES')
-    }
-    triggers {
-        cron('*/5 * * * *')
-    }
+    agent any
     stages {
         stage ('git') {
             steps {
-                git url: 'https://github.com/jenkinsci/jenkins.git',
+                git url: 'https://github.com/bhargavramaraju/spring-petclinic.git',
                     branch: 'main'
             }
-
         }
-        stage ('build'){
-            steps {
-                sh 'mvn clean install'
-                sh 'mvn clean package'
-                archiveArtifacts artifacts: '**/target/*.jar'
-                junit testResults: '**/target/surefire-reports/*.xml'
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: '**/target/*.jar'
-                    junit testResults: '**/target/surefire-reports/*.xml'
-                    mail subject: 'from build success',
-                         from: 'bhargavvegesna1997@gmail.com',
-                         to: 'bhargavvegesna@gmail.com',
-                         body: "build success $BUILD_URL done"
-                }
-                failure {
-                    mail subject: 'from build failure',
-                         from: 'bhargavvegesna1997@gmail.com',
-                         to: 'bhargavvegesna@gmail.com',
-                         body: "build failure $BUILD_URL happended"
-                }
-            }
-
-        }
-    }
+    }   
 }
