@@ -435,12 +435,8 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
-    <repository>
-        <id>central</id>
-        <name>ip-172-31-11-221-releases</name>
-        <url>http://54.183.236.141:8081/artifactory/libs-release-local</url>
-    </repository>
-</distributionManagement>
-
 </project>
+
+
+
+
