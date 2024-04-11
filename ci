@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+    tools {
+        maven 'maven' // Configuring Maven tool named 'Maven'
+    }
+    stages {
+        stage ('git') {
+            steps {
+                git url: 'https://github.com/bhargavvegesna/spring-petclinic.git',
+                    branch: 'main'
+            }
+
+        }
+        stage ('build') {
+            steps {
+                sh 'mvn clean install'
+                sh 'mvn clean package'
+                stash name: 'spc', includes: '**/target/spring-petclinic-3.2.0-SNAPSHOT.jar'
+                //withSonarQubeEnv(installationName: 'SONARCLOUD', credentialsId: 'sonarcloud') {
+                  // sh  'mvn clean verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=us-east-dev -Dsonar.projectKey=us-east-dev_springpetclinic'
+                //}
+                archiveArtifacts artifacts: '**/target/*.jar'
+                junit testResults: '**/target/surefire-reports/*.xml'
+            }
+        }
+        stage("docker build") {
+            agent { label 'DOCKER' }
+            steps {
+                unstash name: 'spc'
+                sh 'sudo docker image build -t shaikkhajaibrahim/spc:dev-$BUILD_ID .'
+            }
+        }
+    }
+}
