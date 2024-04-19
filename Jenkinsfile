@@ -1,11 +1,18 @@
 pipeline {
     agent any
     stages {
-        stage ('git') {
+        stage('Git') {
             steps {
                 git url: 'https://github.com/bhargavramaraju/spring-petclinic.git',
-                    branch: 'main'
+                   branch: 'main'
             }
         }
-    }   
+        stage('k8s') {
+            steps {
+                withKubeConfig([credentialsId: 'k8s', serverUrl: '']) {
+                    sh 'kubectl apply -f deployment.yaml'
+                }
+            }
+        }
+    }
 }
